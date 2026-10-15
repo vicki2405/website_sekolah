@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "paths": {
+            "@/*": ["./resources/js/*"]
+        },
+        "jsx": "preserve",
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "strict": true
+    },
+    "exclude": ["node_modules", "public", "dist"]
+}
