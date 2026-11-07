@@ -162,7 +162,11 @@ const mobileBottomItems = computed(() => ([
                                     leave-from-class="opacity-100 translate-y-0 scale-100"
                                     leave-to-class="opacity-0 translate-y-2 scale-95"
                                 >
-                                    <div v-show="activeDropdown === item.name" class="absolute left-0 group-last:left-auto group-last:right-0 mt-1.5 w-60 rounded-2xl bg-white/95 backdrop-blur-xl shadow-2xl shadow-slate-300/50 border border-slate-100 py-2.5 z-50 ring-1 ring-slate-900/5">
+                                    <div
+                                        v-show="activeDropdown === item.name"
+                                        class="absolute mt-1.5 w-60 rounded-2xl bg-white/95 backdrop-blur-xl shadow-2xl shadow-slate-300/50 border border-slate-100 py-2.5 z-50 ring-1 ring-slate-900/5 max-w-[calc(100vw-2rem)]"
+                                        :class="['Portal', 'TEFA', 'WAKA'].includes(item.name) ? 'right-0' : 'left-0'"
+                                    >
                                         <div v-if="!item.children || item.children.length === 0" class="px-4 py-3 text-xs font-semibold text-slate-400">
                                             Belum ada menu
                                         </div>
