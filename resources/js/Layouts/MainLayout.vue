@@ -112,7 +112,7 @@ const mobileBottomItems = computed(() => ([
 </script>
 
 <template>
-    <div class="min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-brand-600 selection:text-white">
+    <div class="min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-brand-600 selection:text-white overflow-x-clip">
         <!-- Navigation -->
         <nav class="fixed w-full z-50 transition-all duration-300 bg-white/95 backdrop-blur-md border-b border-slate-200">
             <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -127,11 +127,11 @@ const mobileBottomItems = computed(() => ([
                                 height="56"
                             />
                             <div class="leading-none shrink-0">
-                                <div class="text-2xl sm:text-2xl xl:text-3xl font-black tracking-tight whitespace-nowrap">
+                                <div class="text-xl sm:text-2xl xl:text-3xl font-black tracking-tight whitespace-nowrap">
                                     <span class="text-brand-600">STEMDA</span> <span class="text-slate-900">GENTENG</span>
                                 </div>
                                 <div
-                                    class="mt-1 text-[10px] sm:text-[11px] xl:text-xs font-bold tracking-wide text-red-600 leading-snug whitespace-nowrap"
+                                    class="hidden sm:block mt-0.5 text-[10px] sm:text-[11px] xl:text-xs font-bold tracking-wide text-red-600 leading-snug whitespace-nowrap"
                                     style="text-shadow:-1px -1px 0 #fff,1px -1px 0 #fff,-1px 1px 0 #fff,1px 1px 0 #fff;"
                                 >
                                     Outstanding and Innovative Vocational School
@@ -141,7 +141,7 @@ const mobileBottomItems = computed(() => ([
                     </div>
 
                     <!-- Desktop Menu with Modern Hover Pill & Springy Transitions -->
-                    <div class="hidden lg:flex space-x-0.5 xl:space-x-1 items-center">
+                    <div class="hidden xl:flex space-x-0.5 xl:space-x-1 items-center">
                         <template v-for="item in navigation" :key="item.name">
                             <div v-if="item.children" class="relative group" @mouseenter="activeDropdown = item.name" @mouseleave="activeDropdown = null">
                                 <button
@@ -199,6 +199,18 @@ const mobileBottomItems = computed(() => ([
                             </template>
                         </div>
                     </div>
+
+                    <!-- Mobile / Tablet Hamburger Button -->
+                    <div class="flex items-center gap-2 xl:hidden">
+                        <button
+                            type="button"
+                            @click="openMobileMenu()"
+                            class="inline-flex items-center justify-center p-2.5 rounded-2xl bg-slate-100 hover:bg-brand-50 text-slate-700 hover:text-brand-600 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500 min-w-[44px] min-h-[44px]"
+                            aria-label="Buka Menu Navigasi"
+                        >
+                            <Menu class="w-6 h-6" />
+                        </button>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -212,7 +224,7 @@ const mobileBottomItems = computed(() => ([
                 leave-from-class="opacity-100"
                 leave-to-class="opacity-0"
             >
-                <div v-show="isMenuOpen" class="lg:hidden fixed inset-0 z-[70]" @click.self="isMenuOpen = false">
+                <div v-show="isMenuOpen" class="xl:hidden fixed inset-0 z-[70]" @click.self="isMenuOpen = false">
                     <div class="absolute inset-0 bg-slate-900/45 backdrop-blur-sm"></div>
 
                     <Transition
@@ -227,8 +239,8 @@ const mobileBottomItems = computed(() => ([
                             <div class="px-4 pt-3 pb-2">
                                 <div class="mx-auto h-1.5 w-10 rounded-full bg-slate-200"></div>
                                 <div class="mt-3 flex items-center justify-between">
-                                    <div class="text-base font-semibold text-slate-900">Menu</div>
-                                    <button type="button" aria-label="Tutup menu" class="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2" @click="isMenuOpen = false">
+                                    <div class="text-base font-bold text-slate-900">Menu Navigasi</div>
+                                    <button type="button" aria-label="Tutup menu" class="p-2.5 rounded-2xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 min-w-[44px] min-h-[44px] flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500" @click="isMenuOpen = false">
                                         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                         </svg>
@@ -242,7 +254,7 @@ const mobileBottomItems = computed(() => ([
                                         <button
                                             type="button"
                                             @click="toggleMobileDropdown(item.name)"
-                                            class="w-full flex justify-between items-center px-3 py-2.5 rounded-2xl text-base font-semibold text-slate-800 hover:text-brand-600 hover:bg-slate-50 transition-colors"
+                                            class="w-full flex justify-between items-center px-3.5 py-3 rounded-2xl text-base font-semibold text-slate-800 hover:text-brand-600 hover:bg-slate-50 transition-colors min-h-[48px]"
                                         >
                                             {{ item.name }}
                                             <svg class="w-5 h-5 transition-transform duration-200" :class="{ 'rotate-180': mobileActiveDropdown === item.name }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -258,7 +270,7 @@ const mobileBottomItems = computed(() => ([
                                                     v-if="child.external"
                                                     :href="child.href"
                                                     target="_blank"
-                                                    class="block px-3 py-2.5 text-sm font-semibold text-slate-700 hover:text-brand-600 transition-colors"
+                                                    class="block px-3.5 py-2.5 text-sm font-semibold text-slate-700 hover:text-brand-600 transition-colors min-h-[44px] flex items-center"
                                                     @click="isMenuOpen = false"
                                                 >
                                                     {{ child.name }}
@@ -266,8 +278,8 @@ const mobileBottomItems = computed(() => ([
                                                 <Link
                                                     v-else
                                                     :href="child.href"
-                                                    class="block px-3 py-2.5 text-sm font-semibold text-slate-700 hover:text-brand-600 transition-colors rounded-xl"
-                                                    :class="{ 'text-brand-700 bg-brand-50': $page.url === normalizeHref(child.href) }"
+                                                    class="block px-3.5 py-2.5 text-sm font-semibold text-slate-700 hover:text-brand-600 transition-colors rounded-xl min-h-[44px] flex items-center"
+                                                    :class="{ 'text-brand-700 bg-brand-50 font-bold': $page.url === normalizeHref(child.href) }"
                                                     @click="isMenuOpen = false"
                                                 >
                                                     {{ child.name }}
@@ -278,8 +290,8 @@ const mobileBottomItems = computed(() => ([
                                     <Link
                                         v-else
                                         :href="item.href"
-                                        class="block px-3 py-2.5 rounded-2xl text-base font-semibold text-slate-800 hover:text-brand-600 hover:bg-slate-50 transition-colors"
-                                        :class="{ 'text-brand-700 bg-brand-50': $page.url === normalizeHref(item.href) }"
+                                        class="block px-3.5 py-3 rounded-2xl text-base font-semibold text-slate-800 hover:text-brand-600 hover:bg-slate-50 transition-colors min-h-[48px] flex items-center"
+                                        :class="{ 'text-brand-700 bg-brand-50 font-bold': $page.url === normalizeHref(item.href) }"
                                         @click="isMenuOpen = false"
                                     >
                                         {{ item.name }}
@@ -287,10 +299,10 @@ const mobileBottomItems = computed(() => ([
                                 </template>
 
                                 <div class="pt-4 mt-4 border-t border-slate-100 flex flex-col gap-2">
-                                    <Link v-if="$page.props.auth?.user" :href="route('dashboard')" class="block px-3 py-2 text-base font-semibold text-slate-800 hover:text-brand-600" @click="isMenuOpen = false">
+                                    <Link v-if="$page.props.auth?.user" :href="route('dashboard')" class="block px-3.5 py-3 text-base font-semibold text-slate-800 hover:text-brand-600 min-h-[44px] flex items-center" @click="isMenuOpen = false">
                                         Dashboard
                                     </Link>
-                                    <Link v-if="$page.props.auth?.isAdmin" :href="route('admin.dashboard')" class="block px-3 py-2 text-base font-semibold text-slate-800 hover:text-brand-600" @click="isMenuOpen = false">
+                                    <Link v-if="$page.props.auth?.isAdmin" :href="route('admin.dashboard')" class="block px-3.5 py-3 text-base font-semibold text-slate-800 hover:text-brand-600 min-h-[44px] flex items-center" @click="isMenuOpen = false">
                                         Admin
                                     </Link>
                                 </div>
@@ -302,12 +314,12 @@ const mobileBottomItems = computed(() => ([
         </Teleport>
 
         <!-- Main Content -->
-        <main class="pt-20 pb-32 lg:pb-0">
+        <main class="pt-20 pb-28 md:pb-0">
             <slot />
         </main>
 
         <!-- Footer -->
-        <footer class="bg-slate-900 text-slate-300 pt-16 pb-36 lg:pb-16 border-t border-slate-800">
+        <footer class="bg-slate-900 text-slate-300 pt-16 pb-36 md:pb-16 border-t border-slate-800">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-12 gap-12">
                 <div class="md:col-span-4">
                     <div class="flex items-center gap-3 mb-6">
@@ -383,7 +395,7 @@ const mobileBottomItems = computed(() => ([
             </div>
         </footer>
 
-        <div class="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/75 backdrop-blur-md">
+        <div class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/75 backdrop-blur-md">
             <div class="mx-auto max-w-screen-sm px-3 pb-[calc(env(safe-area-inset-bottom)+0.75rem)] pt-3">
                 <div class="relative rounded-[1.75rem] bg-white/90 ring-1 ring-slate-200 shadow-[0_-10px_30px_-20px_rgba(15,23,42,0.55)] px-2 py-2.5">
                     <div class="pointer-events-none absolute inset-y-0 left-0 w-7 rounded-[1.75rem] bg-gradient-to-r from-white/95 to-white/0"></div>

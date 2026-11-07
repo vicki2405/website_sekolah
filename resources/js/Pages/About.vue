@@ -263,8 +263,9 @@ const topAchievements = computed(() => {
                                             :src="getPrakata().image"
                                             :alt="getPrakata().principal_name || 'Kepala Sekolah'"
                                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                            @error="(e) => { e.target.classList.add('hidden'); if (e.target.nextElementSibling) e.target.nextElementSibling.classList.remove('hidden'); }"
                                         />
-                                        <div v-else class="w-full h-full flex flex-col items-center justify-center p-6 text-slate-400">
+                                        <div :class="{ 'hidden': getPrakata().image }" class="w-full h-full flex flex-col items-center justify-center p-6 text-slate-400">
                                             <GraduationCap class="w-20 h-20 text-slate-300 mb-3" />
                                             <span class="text-xs font-bold uppercase tracking-wider">Foto Kepala Sekolah</span>
                                         </div>

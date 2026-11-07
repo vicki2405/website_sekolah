@@ -11,10 +11,11 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 use App\Traits\ImageCompression;
+use App\Traits\HtmlSanitizer;
 
 class NewsController extends Controller
 {
-    use ImageCompression;
+    use ImageCompression, HtmlSanitizer;
 
     private function clearCache(?string $slug = null): void
     {
@@ -31,13 +32,7 @@ class NewsController extends Controller
         $this->middleware('permission:admin.news.delete')->only(['destroy']);
     }
 
-    private function sanitizeHtml(string $html): string
-    {
-        $clean = preg_replace('/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/i', '', $html) ?? '';
-        $clean = preg_replace('/\son\w+\s*=\s*(?:"[^"]*"|\'[^\']*\'|[^\s>]+)/i', '', $clean) ?? '';
-        $clean = preg_replace('/\s(href|src)\s*=\s*(["\'])\s*javascript:[^"\']*\2/i', '', $clean) ?? '';
-        return trim($clean);
-    }
+
 
     public function index()
     {

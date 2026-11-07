@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Tefa;
 use App\Traits\ImageCompression;
+use App\Traits\HtmlSanitizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
@@ -12,7 +13,7 @@ use Illuminate\Validation\Rule;
 
 class TefaController extends Controller
 {
-    use ImageCompression;
+    use ImageCompression, HtmlSanitizer;
 
     public function __construct()
     {
@@ -28,13 +29,7 @@ class TefaController extends Controller
         $this->forgetPublicCaches('tefa', ['slugs' => $slugs]);
     }
 
-    private function sanitizeHtml(string $html): string
-    {
-        $clean = preg_replace('/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/i', '', $html) ?? '';
-        $clean = preg_replace('/\son\w+\s*=\s*(?:"[^"]*"|\'[^\']*\'|[^\s>]+)/i', '', $clean) ?? '';
-        $clean = preg_replace('/\s(href|src)\s*=\s*(["\'])\s*javascript:[^"\']*\2/i', '', $clean) ?? '';
-        return trim($clean);
-    }
+
 
     public function index()
     {

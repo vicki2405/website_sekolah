@@ -3,9 +3,26 @@
 @tailwind utilities;
 
 @layer base {
-  html,
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    overflow-x: hidden;
+  }
+
   body {
     overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Optimize touch responsiveness on Mobile, Tablets, and Digital Interactive Smartboards */
+  a, button, input, select, textarea, [role="button"] {
+    touch-action: manipulation;
+  }
+
+  /* Safe image and media rendering */
+  img, video, canvas, svg {
+    max-width: 100%;
+    height: auto;
   }
 
   .prose,

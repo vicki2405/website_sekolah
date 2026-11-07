@@ -233,11 +233,17 @@ Route::get('/storage/{path}', function (string $path) {
         $candidate = realpath($base . '/' . $path);
         if ($candidate && is_file($candidate) && str_starts_with($candidate, $base)) {
             $mime = @mime_content_type($candidate) ?: 'application/octet-stream';
-            return response()->file($candidate, [
+            $headers = [
                 'Content-Type' => $mime,
                 'Cache-Control' => 'public, max-age=31536000',
                 'X-Content-Type-Options' => 'nosniff',
-            ]);
+            ];
+
+            if ($extension === 'svg') {
+                $headers['Content-Security-Policy'] = "default-src 'none'; style-src 'unsafe-inline'";
+            }
+
+            return response()->file($candidate, $headers);
         }
     }
 

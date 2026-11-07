@@ -168,6 +168,17 @@ class BackupController extends Controller
                 continue;
             }
 
+            if ($verb === 'INSERT') {
+                if (preg_match('/\b(SELECT|UNION|LOAD_FILE|INTO\s+OUTFILE|INTO\s+DUMPFILE)\b/i', $normalized)) {
+                    return redirect()->back()->with('error', 'Import gagal: Query INSERT mengandung subquery atau perintah terlarang.');
+                }
+                foreach ($this->sensitiveTables() as $sensitive) {
+                    if (preg_match('/\b' . preg_quote($sensitive, '/') . '\b/i', $normalized)) {
+                        return redirect()->back()->with('error', 'Import gagal: File backup merujuk ke tabel sensitif: ' . $sensitive);
+                    }
+                }
+            }
+
             if ($verb === 'TRUNCATE' && $table !== null) {
                 $tablesToReplace[] = $table;
                 continue;

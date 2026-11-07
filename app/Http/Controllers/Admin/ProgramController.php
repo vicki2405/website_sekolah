@@ -10,10 +10,11 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 use App\Traits\ImageCompression;
+use App\Traits\HtmlSanitizer;
 
 class ProgramController extends Controller
 {
-    use ImageCompression;
+    use ImageCompression, HtmlSanitizer;
 
     public function __construct()
     {
@@ -35,13 +36,7 @@ class ProgramController extends Controller
             ->get(['id', 'name', 'slug', 'icon', 'description', 'image', 'duration', 'order', 'is_active']);
     }
 
-    private function sanitizeHtml(string $html): string
-    {
-        $clean = preg_replace('/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/i', '', $html) ?? '';
-        $clean = preg_replace('/\son\w+\s*=\s*(?:"[^"]*"|\'[^\']*\'|[^\s>]+)/i', '', $clean) ?? '';
-        $clean = preg_replace('/\s(href|src)\s*=\s*(["\'])\s*javascript:[^"\']*\2/i', '', $clean) ?? '';
-        return trim($clean);
-    }
+
 
     public function index()
     {
@@ -227,7 +222,11 @@ class ProgramController extends Controller
         if ($request->filled('delete_activity_images')) {
             $deletedUrls = json_decode($request->input('delete_activity_images'), true) ?? [];
             if (is_array($deletedUrls) && count($deletedUrls) > 0) {
-                $this->deletePublicFilesIfNeeded($deletedUrls);
+                $allowedUrls = $this->extractActivityImageUrls($program->activity_images);
+                $safeToDelete = array_values(array_intersect($deletedUrls, $allowedUrls));
+                if (count($safeToDelete) > 0) {
+                    $this->deletePublicFilesIfNeeded($safeToDelete);
+                }
                 $activityItems = array_values(array_filter(
                     $activityItems,
                     fn ($item) => !in_array($item['url'] ?? null, $deletedUrls, true)

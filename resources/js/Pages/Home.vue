@@ -25,7 +25,11 @@ import {
     Star,
     ChevronLeft,
     ChevronRight,
-    MonitorPlay
+    MonitorPlay,
+    Trophy,
+    Award,
+    Users,
+    Camera
 } from 'lucide-vue-next';
 
 const props = defineProps({
@@ -91,7 +95,7 @@ const dindikUrl = 'https://dindik.jatimprov.go.id/';
 
     <MainLayout>
         <!-- 1. Ultra-Modern Cinematic Hero Slider Section -->
-        <div class="relative bg-slate-950 h-[560px] sm:h-[580px] lg:h-[640px] overflow-hidden group/slider">
+        <div class="relative bg-slate-950 h-[580px] sm:h-[620px] lg:h-[660px] overflow-hidden group/slider">
             <!-- Global Ambient Mesh Lighting -->
             <div class="absolute inset-0 pointer-events-none opacity-35 z-0">
                 <div class="absolute -top-32 -left-32 w-[30rem] h-[30rem] rounded-full blur-3xl bg-gradient-to-br from-brand-600/40 to-indigo-600/25"></div>
@@ -105,6 +109,7 @@ const dindikUrl = 'https://dindik.jatimprov.go.id/';
                 :slides-per-view="1"
                 :effect="'fade'"
                 :loop="true"
+                :grab-cursor="true"
                 :autoplay="{
                     delay: 5500,
                     disableOnInteraction: false,
@@ -126,7 +131,7 @@ const dindikUrl = 'https://dindik.jatimprov.go.id/';
                     :key="index"
                     class="group/slide h-full"
                 >
-                    <div class="relative h-full w-full flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 pb-24 sm:pb-24">
+                    <div class="relative h-full w-full flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-6 sm:pt-12 pb-24 sm:pb-24">
                         <!-- Background Image (Centered on building for mobile, bottom for desktop) -->
                         <div class="absolute inset-0 overflow-hidden bg-slate-950">
                             <img
@@ -163,7 +168,7 @@ const dindikUrl = 'https://dindik.jatimprov.go.id/';
                             <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-4 transition-all duration-700 delay-700 translate-y-8 opacity-0 group-[.swiper-slide-active]/slide:translate-y-0 group-[.swiper-slide-active]/slide:opacity-100">
                                 <Link
                                     :href="slider.button_link || route('about')"
-                                    class="inline-flex items-center gap-2.5 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 rounded-2xl bg-gradient-to-r from-brand-500 via-brand-600 to-blue-600 text-white font-black text-xs sm:text-base shadow-xl shadow-brand-600/35 hover:shadow-brand-500/50 hover:scale-105 active:scale-95 transition-all duration-300 group/btn"
+                                    class="inline-flex items-center gap-2.5 sm:gap-3 px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl bg-gradient-to-r from-brand-500 via-brand-600 to-blue-600 text-white font-black text-xs sm:text-base shadow-xl shadow-brand-600/35 hover:shadow-brand-500/50 hover:scale-105 active:scale-95 transition-all duration-300 min-h-[48px] group/btn"
                                 >
                                     <span>{{ slider.button_text || 'Jelajahi Profil' }}</span>
                                     <ArrowRight class="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
@@ -171,7 +176,7 @@ const dindikUrl = 'https://dindik.jatimprov.go.id/';
 
                                 <Link
                                     :href="route('contact')"
-                                    class="inline-flex items-center gap-2 px-5 sm:px-7 py-3 sm:py-4 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs sm:text-base border border-white/20 backdrop-blur-xl hover:scale-105 active:scale-95 transition-all duration-300"
+                                    class="inline-flex items-center gap-2 px-5 sm:px-7 py-3.5 sm:py-4 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs sm:text-base border border-white/20 backdrop-blur-xl hover:scale-105 active:scale-95 transition-all duration-300 min-h-[48px]"
                                 >
                                     <span>Info Pendaftaran PPDB</span>
                                 </Link>
@@ -201,44 +206,52 @@ const dindikUrl = 'https://dindik.jatimprov.go.id/';
 
             <!-- Navigation Buttons -->
             <button
-                class="swiper-button-prev-custom absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 lg:w-14 lg:h-14 rounded-2xl bg-slate-900/60 hover:bg-brand-600 border border-white/15 text-white flex items-center justify-center backdrop-blur-xl shadow-2xl transition-all duration-300 opacity-0 group-hover/slider:opacity-100 -translate-x-4 group-hover/slider:translate-x-0 hover:scale-110 active:scale-95 focus:outline-none"
+                class="swiper-button-prev-custom absolute left-2 sm:left-4 lg:left-8 top-1/2 -translate-y-1/2 z-20 w-11 h-11 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-2xl bg-slate-900/70 hover:bg-brand-600 border border-white/15 text-white flex items-center justify-center backdrop-blur-xl shadow-2xl transition-all duration-300 opacity-80 sm:opacity-0 sm:group-hover/slider:opacity-100 hover:opacity-100 hover:scale-110 active:scale-95 focus:outline-none min-w-[44px] min-h-[44px]"
                 aria-label="Slide sebelumnya"
             >
                 <ChevronLeft class="w-6 h-6" />
             </button>
             <button
-                class="swiper-button-next-custom absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 lg:w-14 lg:h-14 rounded-2xl bg-slate-900/60 hover:bg-brand-600 border border-white/15 text-white flex items-center justify-center backdrop-blur-xl shadow-2xl transition-all duration-300 opacity-0 group-hover/slider:opacity-100 translate-x-4 group-hover/slider:translate-x-0 hover:scale-110 active:scale-95 focus:outline-none"
+                class="swiper-button-next-custom absolute right-2 sm:right-4 lg:right-8 top-1/2 -translate-y-1/2 z-20 w-11 h-11 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-2xl bg-slate-900/70 hover:bg-brand-600 border border-white/15 text-white flex items-center justify-center backdrop-blur-xl shadow-2xl transition-all duration-300 opacity-80 sm:opacity-0 sm:group-hover/slider:opacity-100 hover:opacity-100 hover:scale-110 active:scale-95 focus:outline-none min-w-[44px] min-h-[44px]"
                 aria-label="Slide selanjutnya"
             >
                 <ChevronRight class="w-6 h-6" />
             </button>
 
             <!-- Custom Segmented Pill Pagination -->
-            <div class="swiper-pagination-custom absolute bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2.5 px-4 py-2 rounded-full bg-slate-900/70 backdrop-blur-xl border border-white/10 shadow-2xl"></div>
+            <div class="swiper-pagination-custom absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2.5 px-4 py-2 rounded-full bg-slate-900/70 backdrop-blur-xl border border-white/10 shadow-2xl"></div>
         </div>
 
         <!-- 2. Stats Section (Position Ke-2) -->
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-24 relative z-20 mb-24">
-            <div class="bg-white rounded-[3rem] shadow-2xl shadow-slate-200/50 border border-slate-100 p-8 md:p-12 hover:shadow-brand-500/10 transition-shadow duration-500"
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 sm:-mt-16 lg:-mt-24 relative z-20 mb-14 sm:mb-20 lg:mb-24">
+            <div class="bg-white rounded-[2rem] sm:rounded-[3rem] shadow-2xl shadow-slate-200/50 border border-slate-100 p-6 sm:p-8 md:p-12 hover:shadow-brand-500/10 transition-shadow duration-500"
                  v-motion
                  :initial="{ opacity: 0, y: 50 }"
                  :enter="{ opacity: 1, y: 0, transition: { duration: 800, delay: 200 } }">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8">
                     <div class="text-center group" v-motion :initial="{ opacity: 0, scale: 0.8 }" :enter="{ opacity: 1, scale: 1, transition: { duration: 500, delay: 300 } }">
-                        <div class="text-4xl md:text-5xl font-black text-brand-500 mb-2 group-hover:scale-110 transition-transform duration-300">5</div>
+                        <div class="text-4xl md:text-5xl font-black text-brand-500 mb-2 group-hover:scale-110 transition-transform duration-300">
+                            {{ programs && programs.length ? programs.length : 5 }}
+                        </div>
                         <div class="text-sm font-bold text-slate-500 uppercase tracking-widest">Jurusan Unggulan</div>
                     </div>
                     <div class="text-center group" v-motion :initial="{ opacity: 0, scale: 0.8 }" :enter="{ opacity: 1, scale: 1, transition: { duration: 500, delay: 400 } }">
-                        <div class="text-4xl md:text-5xl font-black text-brand-500 mb-2 group-hover:scale-110 transition-transform duration-300">50+</div>
+                        <div class="text-4xl md:text-5xl font-black text-brand-500 mb-2 group-hover:scale-110 transition-transform duration-300">
+                            {{ partners && partners.length ? partners.length + '+' : '50+' }}
+                        </div>
                         <div class="text-sm font-bold text-slate-500 uppercase tracking-widest">Mitra Industri</div>
                     </div>
                     <div class="text-center group" v-motion :initial="{ opacity: 0, scale: 0.8 }" :enter="{ opacity: 1, scale: 1, transition: { duration: 500, delay: 500 } }">
-                        <div class="text-4xl md:text-5xl font-black text-brand-500 mb-2 group-hover:scale-110 transition-transform duration-300">1200+</div>
-                        <div class="text-sm font-bold text-slate-500 uppercase tracking-widest">Siswa Aktif</div>
+                        <div class="text-4xl md:text-5xl font-black text-brand-500 mb-2 group-hover:scale-110 transition-transform duration-300">
+                            {{ teachers && teachers.length ? teachers.length + '+' : '40+' }}
+                        </div>
+                        <div class="text-sm font-bold text-slate-500 uppercase tracking-widest">Pendidik & Staff</div>
                     </div>
                     <div class="text-center group" v-motion :initial="{ opacity: 0, scale: 0.8 }" :enter="{ opacity: 1, scale: 1, transition: { duration: 500, delay: 600 } }">
-                        <div class="text-4xl md:text-5xl font-black text-brand-500 mb-2 group-hover:scale-110 transition-transform duration-300">95%</div>
-                        <div class="text-sm font-bold text-slate-500 uppercase tracking-widest">Lulusan Bekerja</div>
+                        <div class="text-4xl md:text-5xl font-black text-brand-500 mb-2 group-hover:scale-110 transition-transform duration-300">
+                            {{ achievements && achievements.length ? achievements.length + '+' : '25+' }}
+                        </div>
+                        <div class="text-sm font-bold text-slate-500 uppercase tracking-widest">Prestasi Kejuaraan</div>
                     </div>
                 </div>
             </div>
@@ -382,8 +395,8 @@ const dindikUrl = 'https://dindik.jatimprov.go.id/';
                         <div class="flex flex-col items-center w-full">
                             <!-- Logo Box -->
                             <div class="relative z-10 w-20 h-20 sm:w-22 sm:h-22 mb-4 rounded-2xl bg-white/15 border border-white/25 flex items-center justify-center p-3 backdrop-blur-md group-hover:bg-white/25 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-inner">
-                                <img :src="prog.image" :alt="prog.name" class="w-full h-full object-contain drop-shadow-md" @error="(e) => { e.target.style.display='none'; e.target.nextElementSibling.style.display='flex'; }">
-                                <div class="hidden w-full h-full items-center justify-center text-white font-black text-2xl drop-shadow-sm">
+                                <img v-if="prog.image" :src="prog.image" :alt="prog.name" class="w-full h-full object-contain drop-shadow-md" @error="(e) => { e.target.style.display='none'; if(e.target.nextElementSibling) e.target.nextElementSibling.style.display='flex'; }">
+                                <div :class="{ 'flex': !prog.image, 'hidden': prog.image }" class="w-full h-full items-center justify-center text-white font-black text-2xl drop-shadow-sm">
                                     {{ prog.name?.slice(0, 3) || 'P' }}
                                 </div>
                             </div>
@@ -404,8 +417,73 @@ const dindikUrl = 'https://dindik.jatimprov.go.id/';
             </div>
         </div>
 
+        <!-- 5.5 Prestasi & Pencapaian Section -->
+        <div id="prestasi" v-if="achievements && achievements.length > 0" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-14" v-motion-slide-visible-bottom>
+                    <div class="inline-flex items-center gap-2 rounded-2xl border border-brand-200 bg-brand-50 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-brand-700 mb-4">
+                        <Trophy class="h-4 w-4 text-brand-600" />
+                        {{ sections?.achievements?.title || 'Prestasi & Kebanggaan' }}
+                    </div>
+                    <h3 class="text-4xl md:text-5xl font-extrabold text-slate-900">
+                        {{ sections?.achievements?.subtitle || 'Tradisi Juara Siswa STEMDA' }}
+                    </h3>
+                    <div class="w-20 h-1.5 bg-brand-500 mx-auto mt-5 rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                    <div
+                        v-for="(item, index) in achievements.slice(0, 6)"
+                        :key="item.id || index"
+                        v-motion
+                        :initial="{ opacity: 0, y: 35 }"
+                        :visible="{ opacity: 1, y: 0, transition: { duration: 500, delay: index * 100 } }"
+                        class="group relative bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between"
+                    >
+                        <div class="relative aspect-[16/10] bg-slate-100 overflow-hidden">
+                            <img
+                                v-if="item.image"
+                                :src="item.image"
+                                :alt="item.title"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                loading="lazy"
+                            />
+                            <div v-else class="w-full h-full flex items-center justify-center bg-gradient-to-br from-amber-50 to-amber-100 text-amber-500">
+                                <Award class="w-16 h-16 opacity-80" />
+                            </div>
+                            <div v-if="item.value" class="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900/85 backdrop-blur-md text-amber-300 text-xs font-extrabold shadow-md border border-white/10">
+                                <Trophy class="w-3.5 h-3.5 text-amber-400" />
+                                <span>{{ item.value }}</span>
+                            </div>
+                        </div>
+
+                        <div class="p-6 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h4 class="text-lg font-bold text-slate-900 group-hover:text-brand-600 transition-colors line-clamp-2 mb-2">
+                                    {{ item.title }}
+                                </h4>
+                                <p v-if="item.description" class="text-slate-600 text-sm line-clamp-2">
+                                    {{ item.description }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-12" v-motion-fade>
+                    <Link
+                        :href="route('prestasi')"
+                        class="inline-flex items-center gap-2 px-8 py-4 bg-brand-500 hover:bg-brand-600 text-white font-bold rounded-2xl transition-all shadow-lg hover:shadow-brand-500/30 hover:scale-105 active:scale-95"
+                    >
+                        <span>Lihat Semua Prestasi</span>
+                        <ArrowRight class="w-4 h-4" />
+                    </Link>
+                </div>
+            </div>
+        </div>
+
         <!-- 6. Berita Terkini Section (Position Ke-6) -->
-        <div class="py-24 bg-white">
+        <div class="py-24 bg-slate-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-16" v-motion-slide-visible-bottom>
                     <h2 class="text-brand-600 font-bold tracking-widest uppercase text-sm mb-4">Informasi Terbaru</h2>
@@ -494,6 +572,122 @@ const dindikUrl = 'https://dindik.jatimprov.go.id/';
                 <div class="text-center mt-12" v-motion-fade>
                     <Link :href="route('event.agenda')" class="px-8 py-4 bg-brand-500 hover:bg-brand-600 text-white font-bold rounded-xl transition-all inline-block shadow-lg hover:shadow-brand-500/30 hover:scale-105 active:scale-95">
                         Lihat Semua Agenda
+                    </Link>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7.5 Guru & Tenaga Kependidikan Section -->
+        <div id="teachers" v-if="teachers && teachers.length > 0" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-14" v-motion-slide-visible-bottom>
+                    <div class="inline-flex items-center gap-2 rounded-2xl border border-brand-200 bg-brand-50 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-brand-700 mb-4">
+                        <Users class="h-4 w-4 text-brand-600" />
+                        Pendidik & Pembimbing
+                    </div>
+                    <h3 class="text-4xl md:text-5xl font-extrabold text-slate-900">
+                        Guru & Tenaga Kependidikan
+                    </h3>
+                    <p class="mt-4 text-slate-600 max-w-2xl mx-auto text-base">
+                        Didukung tenaga pendidik berpengalaman dan berdedikasi tinggi untuk membina kompetensi kejuruan dan karakter siswa.
+                    </p>
+                    <div class="w-20 h-1.5 bg-brand-500 mx-auto mt-5 rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5 sm:gap-6">
+                    <div
+                        v-for="(teacher, index) in teachers.slice(0, 6)"
+                        :key="teacher.id || index"
+                        v-motion
+                        :initial="{ opacity: 0, y: 30 }"
+                        :visible="{ opacity: 1, y: 0, transition: { duration: 500, delay: index * 80 } }"
+                        class="group bg-slate-50 hover:bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/70 hover:border-brand-200 shadow-sm hover:shadow-xl transition-all duration-300 text-center flex flex-col items-center hover:-translate-y-2"
+                    >
+                        <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden mb-4 bg-slate-200 shadow-md border-2 border-white group-hover:scale-105 transition-transform duration-300 flex items-center justify-center">
+                            <img
+                                v-if="teacher.photo"
+                                :src="teacher.photo"
+                                :alt="teacher.name"
+                                class="w-full h-full object-cover"
+                                loading="lazy"
+                                @error="(e) => { e.target.style.display='none'; if(e.target.nextElementSibling) e.target.nextElementSibling.style.display='flex'; }"
+                            />
+                            <div :class="{ 'flex': !teacher.photo, 'hidden': teacher.photo }" class="w-full h-full items-center justify-center bg-slate-100 text-slate-400">
+                                <Users class="w-10 h-10" />
+                            </div>
+                        </div>
+
+                        <h4 class="font-bold text-slate-900 text-sm sm:text-base group-hover:text-brand-600 transition-colors line-clamp-2 leading-tight">
+                            {{ teacher.name }}
+                        </h4>
+                        <p class="text-xs font-semibold text-brand-600 mt-1 line-clamp-1">
+                            {{ teacher.position || teacher.subject || 'Tenaga Pendidik' }}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="text-center mt-12" v-motion-fade>
+                    <Link
+                        :href="route('teachers')"
+                        class="inline-flex items-center gap-2 px-8 py-4 bg-brand-500 hover:bg-brand-600 text-white font-bold rounded-2xl transition-all shadow-lg hover:shadow-brand-500/30 hover:scale-105 active:scale-95"
+                    >
+                        <span>Lihat Semua Guru & Struktur</span>
+                        <ArrowRight class="w-4 h-4" />
+                    </Link>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7.8 Galeri Dokumentasi Section -->
+        <div id="gallery" v-if="gallery && gallery.length > 0" class="py-20 bg-slate-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-14" v-motion-slide-visible-bottom>
+                    <div class="inline-flex items-center gap-2 rounded-2xl border border-brand-200 bg-brand-50 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-brand-700 mb-4">
+                        <Camera class="h-4 w-4 text-brand-600" />
+                        Dokumentasi Sekolah
+                    </div>
+                    <h3 class="text-4xl md:text-5xl font-extrabold text-slate-900">
+                        Galeri Aktivitas Siswa
+                    </h3>
+                    <p class="mt-4 text-slate-600 max-w-2xl mx-auto text-base">
+                        Momen kegiatan belajar praktik, workshop industri, perlombaan, dan ekstrakurikuler di lingkungan SMKS Muhammadiyah 2 Genteng.
+                    </p>
+                    <div class="w-20 h-1.5 bg-brand-500 mx-auto mt-5 rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+                    <div
+                        v-for="(item, index) in gallery.slice(0, 8)"
+                        :key="item.id || index"
+                        v-motion
+                        :initial="{ opacity: 0, scale: 0.95 }"
+                        :visible="{ opacity: 1, scale: 1, transition: { duration: 500, delay: index * 60 } }"
+                        class="group relative aspect-square rounded-3xl overflow-hidden bg-slate-200 shadow-md hover:shadow-2xl transition-all duration-300"
+                    >
+                        <img
+                            :src="item.image"
+                            :alt="item.title || item.description || 'Galeri SMKS Muhammadiyah 2 Genteng'"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                            loading="lazy"
+                        />
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 sm:p-5">
+                            <span v-if="item.category" class="inline-block w-fit px-2.5 py-1 rounded-full text-[10px] font-extrabold bg-brand-500 text-white mb-2">
+                                {{ item.category }}
+                            </span>
+                            <p class="text-xs sm:text-sm font-bold text-white line-clamp-2 leading-snug">
+                                {{ item.title || item.description || 'Aktivitas Sekolah' }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-12" v-motion-fade>
+                    <Link
+                        :href="route('gallery')"
+                        class="inline-flex items-center gap-2 px-8 py-4 bg-brand-500 hover:bg-brand-600 text-white font-bold rounded-2xl transition-all shadow-lg hover:shadow-brand-500/30 hover:scale-105 active:scale-95"
+                    >
+                        <span>Jelajahi Galeri Foto Lengkap</span>
+                        <ArrowRight class="w-4 h-4" />
                     </Link>
                 </div>
             </div>

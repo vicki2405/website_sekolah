@@ -24,14 +24,14 @@ class HomeController extends Controller
         $payload = Cache::remember('public_home_payload_v1', now()->addMinutes(10), function () {
             return [
                 'sliders'      => Slider::active()->get(['id', 'title', 'subtitle', 'image', 'button_text', 'button_link', 'order'])->toArray(),
-                'achievements' => Achievement::active()->get(['id', 'title', 'image', 'order'])->toArray(),
+                'achievements' => Achievement::active()->take(6)->get(['id', 'title', 'description', 'icon', 'value', 'image', 'order'])->toArray(),
                 'programs'     => Program::active()->get(['id', 'name', 'slug', 'icon', 'description', 'image'])->toArray(),
                 'news'         => News::published()->orderByDesc('published_at')->take(3)->get(['id', 'title', 'slug', 'excerpt', 'image', 'published_at'])->toArray(),
-                'agendas'      => Agenda::upcoming()->get(['id', 'title', 'start_date', 'end_date'])->toArray(),
-                'teachers'     => Teacher::active()->take(6)->get(['id', 'name', 'position', 'photo'])->toArray(),
-                'gallery'      => Gallery::active()->take(8)->get(['id', 'image', 'description'])->toArray(),
-                'partners'     => Partner::query()->orderBy('order')->get(['id', 'name', 'logo'])->toArray(),
-                'testimonials' => Testimonial::active()->get(['id', 'name', 'message', 'photo', 'position', 'company'])->toArray(),
+                'agendas'      => Agenda::upcoming()->get(['id', 'title', 'description', 'start_date', 'end_date', 'category', 'color', 'icon'])->toArray(),
+                'teachers'     => Teacher::active()->take(6)->get(['id', 'name', 'position', 'subject', 'photo'])->toArray(),
+                'gallery'      => Gallery::active()->take(8)->get(['id', 'title', 'image', 'description', 'category'])->toArray(),
+                'partners'     => Partner::query()->orderBy('order')->get(['id', 'name', 'logo', 'category'])->toArray(),
+                'testimonials' => Testimonial::active()->get(['id', 'name', 'message', 'photo', 'position', 'company', 'graduation_year'])->toArray(),
                 'sections'     => HomeSection::query()
                     ->get()
                     ->keyBy('section_key')

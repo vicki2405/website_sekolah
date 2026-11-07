@@ -9,10 +9,11 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use App\Traits\ImageCompression;
+use App\Traits\HtmlSanitizer;
 
 class WakaController extends Controller
 {
-    use ImageCompression;
+    use ImageCompression, HtmlSanitizer;
 
     public function __construct()
     {
@@ -28,13 +29,7 @@ class WakaController extends Controller
         $this->forgetPublicCaches('waka', ['slugs' => $slug !== null ? [$slug] : []]);
     }
 
-    private function sanitizeHtml(string $html): string
-    {
-        $clean = preg_replace('/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/i', '', $html) ?? '';
-        $clean = preg_replace('/\son\w+\s*=\s*(?:"[^"]*"|\'[^\']*\'|[^\s>]+)/i', '', $clean) ?? '';
-        $clean = preg_replace('/\s(href|src)\s*=\s*(["\'])\s*javascript:[^"\']*\2/i', '', $clean) ?? '';
-        return trim($clean);
-    }
+
 
     public function index()
     {
@@ -182,8 +177,12 @@ class WakaController extends Controller
         // Remove checked items
         if ($request->has('remove_gallery')) {
             $removeUrls = (array) $request->input('remove_gallery');
+            $allowedUrls = collect(Waka::normalizeGallery($waka->gallery))->pluck('url')->all();
+
             foreach ($removeUrls as $removeUrl) {
-                $this->deletePublicFileIfNeeded($removeUrl);
+                if (in_array($removeUrl, $allowedUrls, true)) {
+                    $this->deletePublicFileIfNeeded($removeUrl);
+                }
                 $gallery = array_values(array_filter(
                     $gallery,
                     fn ($item) => $item['url'] !== $removeUrl

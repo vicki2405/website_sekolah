@@ -35,7 +35,7 @@ class ContactController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:admin.contacts.view')->only(['index', 'show']);
+        $this->middleware('permission:admin.contacts.view')->only(['index', 'show', 'updateSettings']);
         $this->middleware('permission:admin.contacts.delete')->only(['destroy']);
     }
 

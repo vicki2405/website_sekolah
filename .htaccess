@@ -12,8 +12,9 @@
     RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
 
     RewriteRule (^|/)\. - [F,L]
-    RewriteRule ^(app|bootstrap|config|database|resources|routes|tests|vendor)/ - [F,L]
-    RewriteRule ^(\.env|artisan|composer\.(json|lock)|phpunit\.xml|package(-lock)?\.json|vite\.config\.js|postcss\.config\.js|tailwind\.config\.js|jsconfig\.json) - [F,L]
+    RewriteRule ^(app|bootstrap|config|database|resources|routes|tests|vendor|storage)/ - [F,L]
+    RewriteRule ^(\.env|artisan|composer\.(json|lock)|phpunit\.xml|package(-lock)?\.json|vite\.config\.js|postcss\.config\.js|tailwind\.config\.js|jsconfig\.json|compose\.ya?ml) - [F,L]
+    RewriteRule \.(sql|csv|bak|log|ya?ml|sh|env.*)$ - [F,L]
 
     RewriteRule ^build/(.*)$ public/build/$1 [L]
     RewriteRule ^storage/(.*)$ public/storage/$1 [L]

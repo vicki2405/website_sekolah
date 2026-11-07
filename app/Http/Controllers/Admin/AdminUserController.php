@@ -33,7 +33,11 @@ class AdminUserController extends Controller
 
     public function create()
     {
-        $roles = Role::query()->orderBy('name')->get();
+        $query = Role::query()->orderBy('name');
+        if (!Auth::user()?->hasRole('superadmin')) {
+            $query->where('name', '!=', 'superadmin');
+        }
+        $roles = $query->get();
 
         return view('admin.access.users.form', [
             'user' => new User(),
@@ -50,6 +54,10 @@ class AdminUserController extends Controller
             'role' => ['required', 'string', Rule::exists('roles', 'name')->where('guard_name', 'web')],
         ]);
 
+        if ($data['role'] === 'superadmin' && !Auth::user()?->hasRole('superadmin')) {
+            return redirect()->back()->with('error', 'Hanya superadmin yang dapat membuat akun dengan role superadmin');
+        }
+
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -64,7 +72,15 @@ class AdminUserController extends Controller
 
     public function edit(User $user)
     {
-        $roles = Role::query()->orderBy('name')->get();
+        if ($user->hasRole('superadmin') && !Auth::user()?->hasRole('superadmin')) {
+            return redirect()->route('admin.access.users.index')->with('error', 'Anda tidak memiliki hak untuk mengubah akun superadmin');
+        }
+
+        $query = Role::query()->orderBy('name');
+        if (!Auth::user()?->hasRole('superadmin')) {
+            $query->where('name', '!=', 'superadmin');
+        }
+        $roles = $query->get();
 
         return view('admin.access.users.form', [
             'user' => $user->load('roles'),
@@ -74,12 +90,24 @@ class AdminUserController extends Controller
 
     public function update(Request $request, User $user)
     {
+        if ($user->hasRole('superadmin') && !Auth::user()?->hasRole('superadmin')) {
+            return redirect()->route('admin.access.users.index')->with('error', 'Anda tidak memiliki hak untuk mengubah akun superadmin');
+        }
+
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id)],
             'password' => ['nullable', 'string', 'min:8'],
             'role' => ['required', 'string', Rule::exists('roles', 'name')->where('guard_name', 'web')],
         ]);
+
+        if ($data['role'] === 'superadmin' && !Auth::user()?->hasRole('superadmin')) {
+            return redirect()->back()->with('error', 'Hanya superadmin yang dapat memberikan role superadmin');
+        }
+
+        if ($user->hasRole('superadmin') && $data['role'] !== 'superadmin' && (int) $user->id === (int) Auth::id()) {
+            return redirect()->back()->with('error', 'Anda tidak dapat mencabut role superadmin dari akun Anda sendiri');
+        }
 
         $payload = [
             'name' => $data['name'],

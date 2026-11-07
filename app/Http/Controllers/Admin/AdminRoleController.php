@@ -47,6 +47,10 @@ class AdminRoleController extends Controller
             'permissions.*' => ['string', Rule::exists('permissions', 'name')->where('guard_name', 'web')],
         ]);
 
+        if (in_array(strtolower($data['name']), ['superadmin', 'admin'], true)) {
+            return redirect()->back()->with('error', 'Nama role tersebut tidak diizinkan');
+        }
+
         $role = Role::create([
             'name' => $data['name'],
             'guard_name' => 'web',

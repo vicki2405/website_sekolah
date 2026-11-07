@@ -8,10 +8,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 use App\Traits\ImageCompression;
+use App\Traits\HtmlSanitizer;
 
 class ProfileController extends Controller
 {
-    use ImageCompression;
+    use ImageCompression, HtmlSanitizer;
 
     public function __construct()
     {
@@ -25,13 +26,7 @@ class ProfileController extends Controller
         return view('admin.profile', compact('sections'));
     }
 
-    private function sanitizeHtml(string $html): string
-    {
-        $clean = preg_replace('/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/i', '', $html) ?? '';
-        $clean = preg_replace('/\son\w+\s*=\s*(?:"[^"]*"|\'[^\']*\'|[^\s>]+)/i', '', $clean) ?? '';
-        $clean = preg_replace('/\s(href|src)\s*=\s*(["\'])\s*javascript:[^"\']*\2/i', '', $clean) ?? '';
-        return trim($clean);
-    }
+
 
     public function update(Request $request)
     {

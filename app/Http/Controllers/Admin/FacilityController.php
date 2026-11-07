@@ -166,8 +166,12 @@ class FacilityController extends Controller
         // Remove checked items
         if ($request->has('remove_gallery')) {
             $removeUrls = (array) $request->input('remove_gallery');
+            $allowedUrls = collect(Facility::normalizeGallery($facility->gallery))->pluck('url')->all();
+
             foreach ($removeUrls as $removeUrl) {
-                $this->deletePublicFileIfNeeded($removeUrl);
+                if (in_array($removeUrl, $allowedUrls, true)) {
+                    $this->deletePublicFileIfNeeded($removeUrl);
+                }
                 $gallery = array_values(array_filter(
                     $gallery,
                     fn ($item) => $item['url'] !== $removeUrl
