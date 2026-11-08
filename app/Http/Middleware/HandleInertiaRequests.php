@@ -36,6 +36,7 @@ class HandleInertiaRequests extends Middleware
             $shared['waka_menu'] = $this->getWakaMenu();
             $shared['tefa_menu'] = $this->getTefaMenu();
             $shared['system_info_menu'] = $this->getSystemInformationMenu();
+            $shared['site_settings'] = $this->getSiteSettings();
         }
 
         return $shared;
@@ -96,6 +97,41 @@ class HandleInertiaRequests extends Middleware
             });
         } catch (\Exception) {
             return [];
+        }
+    }
+
+    private function getSiteSettings(): array
+    {
+        try {
+            return Cache::remember('public_site_settings', now()->addHours(24), function () {
+                $keys = [
+                    'school_logo',
+                    'school_favicon',
+                    'school_name_primary',
+                    'school_name_secondary',
+                    'school_tagline',
+                ];
+                $settings = \App\Models\Setting::query()
+                    ->whereIn('key', $keys)
+                    ->pluck('value', 'key')
+                    ->toArray();
+
+                return [
+                    'logo'           => $settings['school_logo'] ?? null,
+                    'favicon'        => $settings['school_favicon'] ?? null,
+                    'name_primary'   => $settings['school_name_primary'] ?? 'STEMDA',
+                    'name_secondary' => $settings['school_name_secondary'] ?? 'GENTENG',
+                    'tagline'        => $settings['school_tagline'] ?? 'Outstanding and Innovative Vocational School',
+                ];
+            });
+        } catch (\Exception) {
+            return [
+                'logo'           => null,
+                'favicon'        => null,
+                'name_primary'   => 'STEMDA',
+                'name_secondary' => 'GENTENG',
+                'tagline'        => 'Outstanding and Innovative Vocational School',
+            ];
         }
     }
 }

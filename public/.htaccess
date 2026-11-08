@@ -5,6 +5,9 @@
 
     RewriteEngine On
 
+    # Block script execution in storage directory
+    RewriteRule ^storage/.*\.(php|phtml|phar|pl|py|jsp|asp|sh|cgi|bash)$ - [F,L,NC]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]

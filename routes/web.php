@@ -100,9 +100,7 @@ Route::prefix('admin')
                 'programCount'         => \Illuminate\Support\Facades\DB::table('programs')->count(),
                 'teacherCount'         => \Illuminate\Support\Facades\DB::table('teachers')->count(),
                 'achievementCount'     => \Illuminate\Support\Facades\DB::table('achievements')->count(),
-                'todayVisitorCount'    => \App\Models\VisitorLog::whereDate('created_at', \Carbon\Carbon::today())->distinct('ip_address')->count('ip_address'),
-                'totalVisitorCount'    => \App\Models\VisitorLog::distinct('ip_address')->count('ip_address'),
-                'recentNews'           => \App\Models\News::query()->latest()->take(5)->get(['id', 'title', 'is_published', 'created_at']),
+                'recentNews'           => \App\Models\News::query()->latest()->take(5)->get(['id', 'title', 'slug', 'is_published', 'created_at']),
             ]);
         })->name('dashboard')->middleware('permission:admin.dashboard.view');
 
@@ -140,6 +138,12 @@ Route::prefix('admin')
 
         Route::get('profile', [\App\Http\Controllers\Admin\ProfileController::class, 'index'])->name('profile.index');
         Route::put('profile', [\App\Http\Controllers\Admin\ProfileController::class, 'update'])->name('profile.update');
+
+        // Appearance & School Identity Management
+        Route::get('appearance', [\App\Http\Controllers\Admin\AppearanceController::class, 'index'])->name('appearance.index');
+        Route::put('appearance', [\App\Http\Controllers\Admin\AppearanceController::class, 'update'])->name('appearance.update');
+        Route::delete('appearance/logo', [\App\Http\Controllers\Admin\AppearanceController::class, 'resetLogo'])->name('appearance.reset-logo');
+        Route::delete('appearance/favicon', [\App\Http\Controllers\Admin\AppearanceController::class, 'resetFavicon'])->name('appearance.reset-favicon');
 
         Route::get('prestasi', [AdminAchievementController::class, 'index'])->name('prestasi.index');
         Route::get('prestasi/create', [AdminAchievementController::class, 'create'])->name('prestasi.create');

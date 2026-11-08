@@ -30,10 +30,12 @@
                     <i class="fa-solid fa-globe"></i>
                     Lihat Web Publik
                 </a>
+                @can('admin.news.create')
                 <a href="{{ route('admin.news.create') }}" class="px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 border hover:bg-white/20" style="background: rgba(255, 255, 255, 0.18) !important; color: #ffffff !important; border-color: rgba(255, 255, 255, 0.35) !important;">
                     <i class="fa-solid fa-plus"></i>
                     Tulis Berita Baru
                 </a>
+                @endcan
             </div>
         </div>
     </div>
@@ -54,11 +56,13 @@
                 <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Berita</p>
                 <h3 class="text-3xl font-extrabold text-slate-900 mt-1">{{ $newsCount }}</h3>
             </div>
+            @can('admin.news.view')
             <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
                 <a href="{{ route('admin.news.index') }}" class="font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1 group-hover:gap-1.5 transition-all">
                     Kelola Berita <i class="fa-solid fa-arrow-right text-[10px]"></i>
                 </a>
             </div>
+            @endcan
         </div>
 
         <!-- Programs Stat -->
@@ -75,11 +79,13 @@
                 <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Program Keahlian</p>
                 <h3 class="text-3xl font-extrabold text-slate-900 mt-1">{{ $programCount }}</h3>
             </div>
+            @can('admin.programs.view')
             <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
                 <a href="{{ route('admin.programs.index') }}" class="font-bold text-purple-600 hover:text-purple-700 flex items-center gap-1 group-hover:gap-1.5 transition-all">
                     Lihat Program <i class="fa-solid fa-arrow-right text-[10px]"></i>
                 </a>
             </div>
+            @endcan
         </div>
 
         <!-- Teachers Stat -->
@@ -96,11 +102,13 @@
                 <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Guru & Tenaga Kerja</p>
                 <h3 class="text-3xl font-extrabold text-slate-900 mt-1">{{ $teacherCount }}</h3>
             </div>
+            @can('admin.teachers.view')
             <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
                 <a href="{{ route('admin.teachers.index') }}" class="font-bold text-amber-600 hover:text-amber-700 flex items-center gap-1 group-hover:gap-1.5 transition-all">
                     Daftar Guru <i class="fa-solid fa-arrow-right text-[10px]"></i>
                 </a>
             </div>
+            @endcan
         </div>
 
         <!-- Achievements Stat -->
@@ -117,11 +125,13 @@
                 <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Item Prestasi</p>
                 <h3 class="text-3xl font-extrabold text-slate-900 mt-1">{{ $achievementCount ?? 0 }}</h3>
             </div>
+            @can('admin.prestasi.view')
             <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
                 <a href="{{ route('admin.prestasi.index') }}" class="font-bold text-emerald-600 hover:text-emerald-700 flex items-center gap-1 group-hover:gap-1.5 transition-all">
                     Kelola Prestasi <i class="fa-solid fa-arrow-right text-[10px]"></i>
                 </a>
             </div>
+            @endcan
         </div>
     </div>
 
@@ -138,9 +148,11 @@
                         </h3>
                         <p class="text-xs text-slate-500 mt-0.5">Daftar publikasi artikel terakhir yang ada di website</p>
                     </div>
+                    @can('admin.news.view')
                     <a href="{{ route('admin.news.index') }}" class="px-3.5 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs border border-slate-200 transition-all shadow-sm">
                         Lihat Semua
                     </a>
+                    @endcan
                 </div>
 
                 <div class="overflow-x-auto">
@@ -158,9 +170,19 @@
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-3">
                                         <div class="h-2 w-2 rounded-full {{ ($news->is_published ?? false) ? 'bg-emerald-500' : 'bg-amber-400' }}"></div>
+                                        @can('admin.news.edit')
                                         <a href="{{ route('admin.news.edit', $news->id) }}" class="font-bold text-slate-800 hover:text-blue-600 transition-colors line-clamp-1">
                                             {{ $news->title }}
                                         </a>
+                                        @elseif(!empty($news->slug))
+                                        <a href="{{ route('news.show', $news->slug) }}" target="_blank" class="font-bold text-slate-800 hover:text-blue-600 transition-colors line-clamp-1">
+                                            {{ $news->title }}
+                                        </a>
+                                        @else
+                                        <span class="font-bold text-slate-800 line-clamp-1">
+                                            {{ $news->title }}
+                                        </span>
+                                        @endcan
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 text-center">
@@ -200,6 +222,7 @@
                     Akses Cepat
                 </h3>
                 <div class="grid grid-cols-2 gap-3">
+                    @can('admin.prestasi.view')
                     <a href="{{ route('admin.prestasi.index') }}" class="p-3.5 rounded-2xl bg-slate-50 hover:bg-blue-50 border border-slate-200/80 hover:border-blue-200 transition-all text-left group">
                         <div class="h-8 w-8 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-sm mb-2 group-hover:scale-110 transition-transform">
                             <i class="fa-solid fa-trophy"></i>
@@ -207,7 +230,9 @@
                         <div class="text-xs font-bold text-slate-800">Prestasi</div>
                         <div class="text-[10px] text-slate-400">Atur highlight</div>
                     </a>
+                    @endcan
 
+                    @can('admin.programs.view')
                     <a href="{{ route('admin.programs.index') }}" class="p-3.5 rounded-2xl bg-slate-50 hover:bg-purple-50 border border-slate-200/80 hover:border-purple-200 transition-all text-left group">
                         <div class="h-8 w-8 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-sm mb-2 group-hover:scale-110 transition-transform">
                             <i class="fa-solid fa-graduation-cap"></i>
@@ -215,7 +240,9 @@
                         <div class="text-xs font-bold text-slate-800">Jurusan</div>
                         <div class="text-[10px] text-slate-400">5 Konsentrasi</div>
                     </a>
+                    @endcan
 
+                    @can('admin.profile.view')
                     <a href="{{ route('admin.profile.index') }}" class="p-3.5 rounded-2xl bg-slate-50 hover:bg-emerald-50 border border-slate-200/80 hover:border-emerald-200 transition-all text-left group">
                         <div class="h-8 w-8 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-sm mb-2 group-hover:scale-110 transition-transform">
                             <i class="fa-solid fa-id-card"></i>
@@ -223,7 +250,9 @@
                         <div class="text-xs font-bold text-slate-800">Profil</div>
                         <div class="text-[10px] text-slate-400">Visi, Misi, Sejarah</div>
                     </a>
+                    @endcan
 
+                    @can('admin.visitors.view')
                     <a href="{{ route('admin.visitors.index') }}" class="p-3.5 rounded-2xl bg-slate-50 hover:bg-emerald-50 border border-slate-200/80 hover:border-emerald-200 transition-all text-left group">
                         <div class="h-8 w-8 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-sm mb-2 group-hover:scale-110 transition-transform">
                             <i class="fa-solid fa-chart-line"></i>
@@ -231,7 +260,9 @@
                         <div class="text-xs font-bold text-slate-800">Pengunjung</div>
                         <div class="text-[10px] text-slate-400">Trafik & Analytics</div>
                     </a>
+                    @endcan
 
+                    @can('admin.gallery.view')
                     <a href="{{ route('admin.gallery.index') }}" class="p-3.5 rounded-2xl bg-slate-50 hover:bg-pink-50 border border-slate-200/80 hover:border-pink-200 transition-all text-left group">
                         <div class="h-8 w-8 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-sm mb-2 group-hover:scale-110 transition-transform">
                             <i class="fa-solid fa-images"></i>
@@ -239,6 +270,7 @@
                         <div class="text-xs font-bold text-slate-800">Galeri</div>
                         <div class="text-[10px] text-slate-400">Dokumentasi</div>
                     </a>
+                    @endcan
                 </div>
             </div>
         </div>

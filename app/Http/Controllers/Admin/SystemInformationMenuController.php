@@ -25,7 +25,14 @@ class SystemInformationMenuController extends Controller
     {
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'url' => ['required', 'string', 'max:2048'],
+            'url' => [
+                'required',
+                'string',
+                'max:2048',
+                'regex:/^(https?:\/\/|\/)[a-zA-Z0-9_\-\.\:\/\?\#\[\]\@\!\$\&\'\(\)\*\+\,\;\=\%]+$/i',
+            ],
+        ], [
+            'url.regex' => 'URL harus diawali dengan http://, https://, atau / (path internal yang valid).',
         ]);
 
         SystemInformationMenu::create($data);

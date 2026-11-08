@@ -108,16 +108,38 @@
         id="sidebar"
         class="fixed inset-y-0 left-0 w-72 bg-white border-r border-slate-200/80 z-50 transition-transform duration-300 transform -translate-x-full lg:translate-x-0 flex flex-col shadow-xl lg:shadow-none"
     >
+        @php
+            $adminLogo = \Illuminate\Support\Facades\Cache::remember('public_site_logo', now()->addHours(24), function () {
+                try {
+                    return \App\Models\Setting::where('key', 'school_logo')->value('value');
+                } catch (\Exception) {
+                    return null;
+                }
+            });
+            $adminPrimaryName = \Illuminate\Support\Facades\Cache::remember('public_site_name', now()->addHours(24), function () {
+                try {
+                    return \App\Models\Setting::where('key', 'school_name_primary')->value('value') ?: 'STEMDA';
+                } catch (\Exception) {
+                    return 'STEMDA';
+                }
+            });
+        @endphp
         <!-- Logo Area -->
         <div class="p-6 border-b border-slate-100 flex items-center justify-between">
             <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 group">
-                <div class="h-11 w-11 rounded-2xl bg-gradient-to-tr from-blue-700 to-blue-500 p-0.5 shadow-md shadow-blue-500/20 flex items-center justify-center">
-                    <div class="h-full w-full bg-white rounded-[14px] flex items-center justify-center">
-                        <i class="fa-solid fa-graduation-cap text-blue-600 text-lg"></i>
-                    </div>
+                <div class="h-11 w-11 rounded-2xl bg-gradient-to-tr from-blue-700 to-blue-500 p-0.5 shadow-md shadow-blue-500/20 flex items-center justify-center overflow-hidden">
+                    @if($adminLogo)
+                        <div class="h-full w-full bg-white rounded-[14px] flex items-center justify-center p-1">
+                            <img src="{{ str_starts_with($adminLogo, 'http') ? $adminLogo : asset(ltrim($adminLogo, '/')) }}" class="max-h-full max-w-full object-contain" alt="Logo">
+                        </div>
+                    @else
+                        <div class="h-full w-full bg-white rounded-[14px] flex items-center justify-center">
+                            <i class="fa-solid fa-graduation-cap text-blue-600 text-lg"></i>
+                        </div>
+                    @endif
                 </div>
                 <div>
-                    <span class="font-extrabold text-lg tracking-tight text-slate-900 block leading-tight">STEMDA</span>
+                    <span class="font-extrabold text-lg tracking-tight text-slate-900 block leading-tight">{{ $adminPrimaryName }}</span>
                     <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">Admin Control</span>
                 </div>
             </a>
@@ -136,7 +158,9 @@
                         <i class="fa-solid fa-chart-pie w-5 text-center text-sm {{ request()->routeIs('admin.dashboard') ? 'text-white' : 'text-slate-400 group-hover:text-blue-600' }}"></i>
                         <span>Dashboard</span>
                     </a>
+                @endcan
 
+                @can('admin.visitors.view')
                     <a href="{{ route('admin.visitors.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all duration-150 group font-semibold text-sm {{ request()->routeIs('admin.visitors.*') ? 'sidebar-item-active' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
                         <i class="fa-solid fa-chart-line w-5 text-center text-sm {{ request()->routeIs('admin.visitors.*') ? 'text-white' : 'text-slate-400 group-hover:text-blue-600' }}"></i>
                         <span>Statistik Pengunjung</span>
@@ -151,6 +175,13 @@
                         <span>Home & Banner</span>
                     </a>
                 @endcan
+
+                @canany(['admin.appearance.view', 'admin.home.view'])
+                    <a href="{{ route('admin.appearance.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all duration-150 group font-semibold text-sm {{ request()->routeIs('admin.appearance.*') ? 'sidebar-item-active' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
+                        <i class="fa-solid fa-paintbrush w-5 text-center text-sm {{ request()->routeIs('admin.appearance.*') ? 'text-white' : 'text-slate-400 group-hover:text-blue-600' }}"></i>
+                        <span>Tampilan & Logo</span>
+                    </a>
+                @endcanany
 
                 @can('admin.profile.view')
                     <a href="{{ route('admin.profile.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all duration-150 group font-semibold text-sm {{ request()->routeIs('admin.profile.*') ? 'sidebar-item-active' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
@@ -309,7 +340,7 @@
                     </div>
                     <div class="h-8 w-8 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 p-0.5 shadow-sm">
                         <div class="h-full w-full bg-white rounded-[9px] flex items-center justify-center font-black text-xs text-blue-600 uppercase">
-                            {{ substr(Auth::user()->name ?? 'A', 0, 1) }}
+                            {{ mb_substr(Auth::user()->name ?? 'A', 0, 1, 'UTF-8') }}
                         </div>
                     </div>
                 </div>

@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\DB;
 
 class VisitorAnalyticsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:admin.visitors.view')->only(['index']);
+        $this->middleware('permission:admin.visitors.delete')->only(['reset']);
+    }
+
     /**
      * Display visitor analytics dashboard.
      */
@@ -115,6 +121,12 @@ class VisitorAnalyticsController extends Controller
      */
     public function reset(Request $request)
     {
+        /** @var \App\Models\User|null $user */
+        $user = $request->user();
+        if (!$user || !$user->hasRole('superadmin')) {
+            return redirect()->route('admin.visitors.index')->with('error', 'Hanya superadmin yang memiliki wewenang untuk mereset riwayat log pengunjung.');
+        }
+
         VisitorLog::truncate();
 
         return redirect()->route('admin.visitors.index')->with('success', 'Data log pengunjung berhasil dibersihkan.');

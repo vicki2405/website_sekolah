@@ -7,6 +7,16 @@ import { ArrowRight, ArrowUp, MapPin, Menu } from 'lucide-vue-next';
 const isMenuOpen = ref(false);
 const page = usePage();
 
+const siteSettings = computed(() => page.props.site_settings || {
+    logo: null,
+    favicon: null,
+    name_primary: 'STEMDA',
+    name_secondary: 'GENTENG',
+    tagline: 'Outstanding and Innovative Vocational School',
+});
+
+const logoFailed = ref(false);
+
 const navigation = computed(() => ([
     { name: 'Home', href: route('home') },
     { name: 'Profil', href: route('about') },
@@ -120,21 +130,35 @@ const mobileBottomItems = computed(() => ([
                     <div class="flex items-center gap-3 shrink-0 mr-2 xl:mr-6">
                         <Link :href="route('home')" class="flex items-center gap-3 shrink-0 group">
                             <img
-                                src="/storage/images/logo2.png"
+                                v-if="siteSettings.logo && !logoFailed"
+                                :src="siteSettings.logo"
                                 alt="Logo"
                                 class="h-11 w-11 sm:h-12 sm:w-12 md:h-13 md:w-13 object-contain shrink-0 group-hover:scale-105 transition-transform"
                                 width="56"
                                 height="56"
+                                @error="logoFailed = true"
                             />
+                            <div
+                                v-else
+                                class="h-11 w-11 sm:h-12 sm:w-12 md:h-13 md:w-13 rounded-2xl bg-gradient-to-tr from-brand-600 to-blue-500 p-0.5 shadow-md shadow-brand-500/20 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform"
+                            >
+                                <div class="h-full w-full bg-white rounded-[14px] flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-brand-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                                        <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                                    </svg>
+                                </div>
+                            </div>
                             <div class="leading-none shrink-0">
                                 <div class="text-xl sm:text-2xl xl:text-3xl font-black tracking-tight whitespace-nowrap">
-                                    <span class="text-brand-600">STEMDA</span> <span class="text-slate-900">GENTENG</span>
+                                    <span class="text-brand-600">{{ siteSettings.name_primary || 'STEMDA' }}</span>
+                                    <span class="text-slate-900 ml-1.5">{{ siteSettings.name_secondary || 'GENTENG' }}</span>
                                 </div>
                                 <div
                                     class="hidden sm:block mt-0.5 text-[10px] sm:text-[11px] xl:text-xs font-bold tracking-wide text-red-600 leading-snug whitespace-nowrap"
                                     style="text-shadow:-1px -1px 0 #fff,1px -1px 0 #fff,-1px 1px 0 #fff,1px 1px 0 #fff;"
                                 >
-                                    Outstanding and Innovative Vocational School
+                                    {{ siteSettings.tagline || 'Outstanding and Innovative Vocational School' }}
                                 </div>
                             </div>
                         </Link>

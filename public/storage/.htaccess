@@ -1,0 +1,34 @@
+# Secure public storage directory
+# Prevent PHP and other script execution in uploaded files directory
+
+Options -ExecCGI
+Options -Indexes
+
+# Disable PHP script execution engine (Apache + mod_php)
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
+<IfModule mod_php7.c>
+    php_flag engine off
+</IfModule>
+<IfModule mod_php8.c>
+    php_flag engine off
+</IfModule>
+
+# Block direct access to executable script extensions
+<IfModule mod_authz_core.c>
+    <FilesMatch "(?i:\.(php|phtml|phar|pl|py|jsp|asp|sh|cgi|bash|env.*))$">
+        Require all denied
+    </FilesMatch>
+</IfModule>
+<IfModule !mod_authz_core.c>
+    <FilesMatch "(?i:\.(php|phtml|phar|pl|py|jsp|asp|sh|cgi|bash|env.*))$">
+        Order Allow,Deny
+        Deny from all
+    </FilesMatch>
+</IfModule>
+
+# Force media headers
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+</IfModule>

@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             'admin.access' => ['view'],
             'admin.dashboard' => ['view'],
             'admin.home' => ['view', 'create', 'edit', 'delete'],
+            'admin.appearance' => ['view', 'edit'],
             'admin.profile' => ['view', 'edit'],
             'admin.backup' => ['view', 'export', 'import'],
             'admin.prestasi' => ['view', 'create', 'edit', 'delete'],
@@ -48,6 +49,7 @@ class DatabaseSeeder extends Seeder
             'admin.tefa' => ['view', 'create', 'edit', 'delete'],
             'admin.users' => ['view', 'create', 'edit', 'delete'],
             'admin.roles' => ['view', 'create', 'edit', 'delete'],
+            'admin.visitors' => ['view', 'delete'],
         ];
 
         $permissions = [];
